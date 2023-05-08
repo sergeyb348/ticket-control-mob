@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">qrcodescanner</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">profile</string>
+    <string name="startup">Startup</string>
+    <string name="yes">Okay!</string>
+    <string name="internet">No internet!</string>
+    <string name="internet_message">Для обновления данных необходим интернет,однако можно играть и без него,если данные уже загружены</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="login_acc">Вход в аккаунт</string>
+    <string name="login_invalid">Неверный логин</string>
+    <string name="login_message">Неверный логин или пароль!</string>
+    <string name="exit">Выйти из аккаунта</string>
+    <string name="login_repeat" translatable="false">Такой логин уже есть!</string>
+    <string name="login_empty" translatable="false">Заполните поля!</string>
+    <string name="internet_message_login" translatable="false">Для авторизации необходим интернет!</string>
+    <string name="password_changed" translatable="false">Пароль обновлен!</string>
+</resources>
