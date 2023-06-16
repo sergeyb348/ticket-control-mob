@@ -72,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
         ApiManager apiManager = ApiManager.getInstance();
 
         if(isNetworkAvailable(this.getApplicationContext())){
-            apiManager.getEvents(user, new Callback<EventList>(){
+            mSettings = getSharedPreferences("mysettings", 0);
+            String token = mSettings.getString("token", "");
+            apiManager.getEvents(token, new Callback<EventList>(){
                 @Override
                 public void onResponse(Call<EventList> call, Response<EventList> response) {
                     if (!response.isSuccessful()) {

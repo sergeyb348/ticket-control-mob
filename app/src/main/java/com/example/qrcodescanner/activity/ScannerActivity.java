@@ -1,5 +1,4 @@
 package com.example.qrcodescanner.activity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,8 +27,8 @@ import com.google.zxing.Result;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 public class ScannerActivity extends AppCompatActivity {
+    public String event_id;
     private CodeScanner mCodeScanner;
     SharedPreferences mSettings;
     public boolean isNetworkAvailable(Context context) {
@@ -45,24 +44,20 @@ public class ScannerActivity extends AppCompatActivity {
         quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-
         quitDialog.show();
     }
     public void openInvalidLoginDialog() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(
                 this);
-        quitDialog.setTitle(R.string.login_invalid).setMessage(R.string.login_message);
+         //R.string.login_invalid R.string.login_message
 
         quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-
         quitDialog.show();
     }
     public void openTicketDialog(String ticketInfo) {
@@ -73,10 +68,8 @@ public class ScannerActivity extends AppCompatActivity {
         quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-
         quitDialog.show();
     }
     @Override
@@ -86,6 +79,7 @@ public class ScannerActivity extends AppCompatActivity {
         dialog.setMessage("Подождите...");
         mSettings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         Ticket ticket = new Ticket();
+        ticket.setEvent_id(mSettings.getString("EventId", ""));
         ticket.setName(mSettings.getString("EventName",""));
         ApiManager apiManager = ApiManager.getInstance();
         setContentView(R.layout.activity_scanner);
@@ -99,30 +93,32 @@ public class ScannerActivity extends AppCompatActivity {
                     public void run() {
                         if(isNetworkAvailable(getApplicationContext())){
                             ticket.setQr(result.getText());
-
-                            apiManager.checkQr(ticket, new Callback<Message>(){
+                            String token = mSettings.getString("token", "");
+                            Log.d("ffffff", token);
+                            apiManager.checkQr(ticket, token,new Callback<Message>(){
                                 @Override
                                 public void onResponse(Call<Message> call, Response<Message> response) {
-
                                     Message ms = response.body();
-                                    if (response.isSuccessful() && ms != null) {
+                                    Log.d("msmsmsms", ms.getMs());
+                                    Log.d("ffffff", token);
+                                    if (response.isSuccessful() /*&& ms != null*/) {
                                         Log.d("HttpCodeID","Result " + result.getText() + " name "+ ticket.getName());
                                         dialog.dismiss();
-                                        if(ms.getMs().equals("none"))
-                                        openTicketDialog("Билета нет в базе данных");
-                                        else if(ms.getMs().equals("resiv"))
-                                            openTicketDialog("Билет уже активирован");
-                                        else
+                                        if(ms.getStatus().equals("none"))
+                                            openTicketDialog("Билета нет в базе данных");
+                                        if(ms.getStatus().equals("activ"))
+                                            openTicketDialog("Билет уже активирован, категория билета - " + ms.getMs());
+                                        if(ms.getStatus().equals("inactiv"))
                                             openTicketDialog("Проверка успешно пройдена, категория билета - "+ ms.getMs());
-
-
-
+                                        if(ms.getStatus().equals("time_w"))
+                                            openTicketDialog("Мероприятие не началось");
+                                        if(ms.getStatus().equals("time_e"))
+                                            openTicketDialog("Мероприятие закончилось");
                                     } else {
                                         dialog.dismiss();
                                         openInvalidLoginDialog();
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<Message> call, Throwable t) {
                                     openInvalidLoginDialog();
@@ -130,15 +126,9 @@ public class ScannerActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             });}
-
                         else{
                             dialog.dismiss();
                             openInternetDialog();}
-
-
-
-
-
                     }
                 });
             }
@@ -150,13 +140,11 @@ public class ScannerActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         mCodeScanner.startPreview();
     }
-
     @Override
     protected void onPause() {
         mCodeScanner.releaseResources();

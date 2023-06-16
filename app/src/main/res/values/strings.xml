@@ -9,7 +9,7 @@
     <string name="internet_message">Для обновления данных необходим интернет,однако можно играть и без него,если данные уже загружены</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
-    <string name="login_acc">Вход в аккаунт</string>
+    <string name="login_acc">Авторизация</string>
     <string name="login_invalid">Неверный логин</string>
     <string name="login_message">Неверный логин или пароль!</string>
     <string name="exit">Выйти из аккаунта</string>

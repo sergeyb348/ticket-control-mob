@@ -1,7 +1,7 @@
 package com.example.qrcodescanner.retrofit;
 
 public class Event {
-    private String event_name, event_start, event_end;
+    private String event_name, event_start, event_end, event_id;
 
     public String getEvent_name() {
         return event_name;
@@ -26,4 +26,13 @@ public class Event {
     public void setEvent_end(String event_end) {
         this.event_end = event_end;
     }
+
+    public String getEvent_id(){
+        return event_id;
+    }
+
+    public void setEvent_id(String event_id) {
+        this.event_id = event_id;
+    }
+
 }

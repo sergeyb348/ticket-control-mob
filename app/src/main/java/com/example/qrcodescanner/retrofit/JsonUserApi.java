@@ -15,12 +15,13 @@ public interface JsonUserApi {
     @POST("usher/login")
     Call<Token> loginUser(@Body User user);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @POST("usher/event/get")
+    Call<EventList> getEvents( @Header("Authorization")String token);
 
-    @POST("event/getForUsher")
-    Call<EventList> getEvents(@Body User user);
-
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("usher/getTicket")
-    Call<Message> checkQr(@Body Ticket ticket);
+    Call<Message> checkQr(@Body Ticket ticket, @Header("Authorization")String token);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("coinAdd")
@@ -31,8 +32,5 @@ public interface JsonUserApi {
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("passwordChange")
     Call<Event> setPassword(@Body User user, @Header("Authorization")String token);
-
-
-
 
 }

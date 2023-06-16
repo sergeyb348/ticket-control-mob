@@ -1,5 +1,4 @@
 package com.example.qrcodescanner.activity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,41 +23,29 @@ import com.example.qrcodescanner.retrofit.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 public class LoginActivity extends AppCompatActivity {
-
-
     private void openInternetDialog() {
-        AlertDialog.Builder quitDialog = new AlertDialog.Builder(
-                this);
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
         quitDialog.setTitle(R.string.internet).setMessage(R.string.internet_message_login);
-
         quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-
         quitDialog.show();
     }
     public boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
-
     public void openInvalidLoginDialog() {
-        AlertDialog.Builder quitDialog = new AlertDialog.Builder(
-                this);
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
         quitDialog.setTitle(R.string.login_invalid).setMessage(R.string.login_message);
-
         quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-
         quitDialog.show();
     }
     ActivityLoginBinding binding;
@@ -82,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
-
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialog.show();
@@ -93,31 +79,24 @@ public class LoginActivity extends AppCompatActivity {
                 user.setEmail(login);
                 user.setPassword(pass);
                 if(isNetworkAvailable(getApplicationContext())){
-
-
                     apiManager.loginUser(user, new Callback<Token>(){
                         @Override
                         public void onResponse(Call<Token> call, Response<Token> response) {
-
                             Token token = response.body();
-
                             if (response.isSuccessful() && token.getToken() != null) {
-
                                 dialog.dismiss();
                                 SharedPreferences.Editor editor = mSettings.edit();
                                 editor.putBoolean("authorize", true);
                                 editor.putString("username", user.getEmail());
+                                editor.putString("token", token.getToken());
                                 editor.apply();
                                 finish();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-
                             } else {
                                 dialog.dismiss();
                                 openInvalidLoginDialog();
                             }
                         }
-
                         @Override
                         public void onFailure(Call<Token> call, Throwable t) {
                             openInvalidLoginDialog();
@@ -125,21 +104,12 @@ public class LoginActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });}
-
                 else{
                     dialog.dismiss();
                     openInternetDialog();}
-
-
-
             }
-
         });
-
-
-
     }
-
     @Override
     public void onBackPressed() {
         finish();

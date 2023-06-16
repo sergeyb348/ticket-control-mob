@@ -11,4 +11,14 @@ public class Message {
 
     private String ms;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String ms) {
+        this.status = status;
+    }
+
 }

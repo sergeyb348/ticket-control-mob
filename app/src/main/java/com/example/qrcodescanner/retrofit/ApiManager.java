@@ -36,7 +36,7 @@ public class ApiManager {
         userCall.enqueue(callback);
     }
 
-    public void getEvents(User token, Callback<EventList> callback) {
+    public void getEvents(String token, Callback<EventList> callback) {
         Call<EventList> tokenCall = service.getEvents(token);
         tokenCall.enqueue(callback);
     }
@@ -47,8 +47,8 @@ public class ApiManager {
         setPassword.enqueue(callback);
     }*/
 
-    public void checkQr(Ticket ticket,Callback<Message> callback) {
-        Call<Message> tokenCall = service.checkQr(ticket);
+    public void checkQr(Ticket ticket, String token,Callback<Message> callback) {
+        Call<Message> tokenCall = service.checkQr(ticket, token);
         tokenCall.enqueue(callback);
     }
 
